@@ -82,15 +82,13 @@ function App() {
     const updatedProducts = products.map((product) => {
       if (product.id === productId) {
         return { ...product, isBought: true };
+      } else {
+        return product;
       }
-      return product;
     });
 
-    if (
-      updatedProducts.every((updatedProduct) =>
-        Boolean(updatedProduct.isBought)
-      )
-    ) {
+    if (updatedProducts.every((updatedProduct) =>  Boolean(updatedProduct.isBought))) 
+    {
       alert("Alisveris Tamamlandi");
     }
 
@@ -129,6 +127,8 @@ function App() {
 
     return result;
   });
+
+  console.log(filteredProducts);
 
   return (
     <React.Fragment>
@@ -275,9 +275,9 @@ function App() {
               <tr
                 key={product.id}
                 onClick={() => isPurchased(product.id)}
-                style={
-                  product.isBought ? { textDecoration: "line-through" } : {}
-                }
+                style={{
+                  textDecoration: product.isBought ? "line-through" : "unset",
+                }}
               >
                 <td>{product.id}</td>
                 <td>{product.name}</td>
