@@ -60,18 +60,22 @@ function App() {
   ];
 
   const addProduct = () => {
-    const productName = listInput;
-    const productId = nanoid().slice(0, 5);
+    if (listInput && selectedShop && selectedCategory) {
+      const productName = listInput;
+      const productId = nanoid().slice(0, 5);
 
-    const product = {
-      id: productId,
-      name: productName,
-      shop: selectedShop,
-      category: selectedCategory,
-    };
+      const product = {
+        id: productId,
+        name: productName,
+        shop: selectedShop,
+        category: selectedCategory,
+      };
 
-    setProducts([...products, product]);
-    setListInput("");
+      setProducts([...products, product]);
+      setListInput("");
+    } else {
+      alert("Ürun ozellileri gir");
+    }
   };
 
   const isPurchased = (productId) => {
