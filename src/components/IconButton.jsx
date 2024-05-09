@@ -4,13 +4,13 @@ import { faSquareMinus } from "@fortawesome/free-regular-svg-icons";
 import "../App.css";
 
 function IconButton({ productId, products, setProducts }) {
-  const deleteProduct = () => {
+  const deleteProduct = (e) => {
     console.log(productId);
 
     setProducts((products) => {
       return products.filter((product) => product.id !== productId);
     });
-
+    e.stopPropagation();
     console.log(products);
   };
 

@@ -82,36 +82,49 @@ function App() {
       return product;
     });
 
+    if (
+      updatedProducts.every((updatedProduct) =>
+        Boolean(updatedProduct.isBought)
+      )
+    ) {
+      alert("Alisveris Tamamlandi");
+    }
+
     setProducts(updatedProducts);
   };
 
-  const searchName = () => {
-    const options = {
-      keys: ["name"],
-    };
-    const fuse = new Fuse(products, options);
-    const filterSearch = fuse.search(filteredName);
+  const filteredProducts = products.filter((product) => {
+    let result = true;
+    // Name search
+    const fuse = new Fuse(products, { keys: ["name"] });
+    const res = fuse.search(filteredName);
 
-    console.log(filterSearch);
-  };
+    if (filteredName !== "" && !res.find((r) => r.item.id === product.id)) {
+      result = false;
+    }
 
-  useEffect(() => {
-    const filterShop = products.filter(
-      (product) => product.shop == filteredShopId
-    );
+    //Shop Filter
+    if (filteredShopId !== "" && product.shop !== filteredShopId) {
+      result = false;
+    }
 
-    console.log(filterShop);
+    // Category Filter
+    if (filteredCategoryId !== "" && product.category !== filteredCategoryId) {
+      result = false;
+    }
 
-    const filterCategory = products.filter(
-      (product) => product.category == filteredCategoryId
-    );
+    //Status Filter
+    if (
+      (filteredStatus !== "reset" &&
+        product.isBought === true &&
+        filteredStatus !== true) ||
+      (product.isBought === undefined && filteredStatus === true)
+    ) {
+      result = false;
+    }
 
-    console.log(filterCategory);
-
-    searchName();
-
-    // console.log(filteredStatus);
-  }, [filteredShopId, filteredCategoryId, filteredName, filteredStatus]);
+    return result;
+  });
 
   return (
     <React.Fragment>
@@ -170,7 +183,7 @@ function App() {
                 value={filteredShopId}
                 onChange={(e) => setFilteredShopId(e.target.value)}
               >
-                <option>Market</option>
+                <option value={""}>Market</option>
                 {shops.map((shop) => (
                   <option key={shop.id} value={shop.id}>
                     {shop.name}
@@ -183,7 +196,7 @@ function App() {
                 value={filteredCategoryId}
                 onChange={(e) => setFilteredCategoryId(e.target.value)}
               >
-                <option>Kategori</option>
+                <option value={""}>Kategori</option>
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.name}
@@ -196,24 +209,39 @@ function App() {
                 label="Tümü"
                 name="group1"
                 type={"radio"}
-                value={"all"}
-                onChange={(e) => setFilteredStatus(e.target.value)}
+                value={"reset"}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setFilteredStatus(
+                    val === "reset" ? val : val === "true" ? true : false
+                  );
+                }}
               />
               <Form.Check
                 inline
                 label="Satın Alınanlar"
                 name="group1"
                 type={"radio"}
-                value={"bought"}
-                onChange={(e) => setFilteredStatus(e.target.value)}
+                value={true}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setFilteredStatus(
+                    val === "reset" ? val : val === "true" ? true : false
+                  );
+                }}
               />
               <Form.Check
                 inline
                 label="Satın Alınmayanlar"
                 name="group1"
                 type={"radio"}
-                value={"notBought"}
-                onChange={(e) => setFilteredStatus(e.target.value)}
+                value={false}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setFilteredStatus(
+                    val === "reset" ? val : val === "true" ? true : false
+                  );
+                }}
               />
 
               <Form.Control
@@ -239,7 +267,7 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <tr
                 key={product.id}
                 onClick={() => isPurchased(product.id)}
