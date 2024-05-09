@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Container, Form, Table } from "react-bootstrap";
+import { Button, Container, Form, FormGroup, Table } from "react-bootstrap";
 import { nanoid } from "nanoid";
 import IconButton from "./components/IconButton";
 import Fuse from "fuse.js";
@@ -15,11 +15,7 @@ function App() {
   const [filteredName, setFilteredName] = useState("");
   const [filteredShopId, setFilteredShopId] = useState("");
   const [filteredCategoryId, setFilteredCategoryId] = useState("");
-  const [filteredStatus, setFilteredStatus] = useState([
-    "all",
-    "bought",
-    "notBought",
-  ]);
+  const [filteredStatus, setFilteredStatus] = useState("");
 
   const shops = [
     {
@@ -87,8 +83,11 @@ function App() {
       }
     });
 
-    if (updatedProducts.every((updatedProduct) =>  Boolean(updatedProduct.isBought))) 
-    {
+    if (
+      updatedProducts.every((updatedProduct) =>
+        Boolean(updatedProduct.isBought)
+      )
+    ) {
       alert("Alisveris Tamamlandi");
     }
 
@@ -117,18 +116,17 @@ function App() {
 
     //Status Filter
     if (
-      (filteredStatus !== "reset" &&
-        product.isBought === true &&
-        filteredStatus !== true) ||
-      (product.isBought === undefined && filteredStatus === true)
+      filteredStatus !== "reset" &&
+      ((product.isBought === true && filteredStatus !== true) ||
+        (product.isBought === undefined && filteredStatus === true))
     ) {
       result = false;
     }
-
     return result;
   });
 
   console.log(filteredProducts);
+
 
   return (
     <React.Fragment>
@@ -208,45 +206,39 @@ function App() {
                 ))}
               </Form.Select>
 
-              <Form.Check
-                inline
-                label="Tümü"
-                name="group1"
-                type={"radio"}
-                value={"reset"}
+              <FormGroup
                 onChange={(e) => {
                   const val = e.target.value;
                   setFilteredStatus(
                     val === "reset" ? val : val === "true" ? true : false
                   );
                 }}
-              />
-              <Form.Check
-                inline
-                label="Satın Alınanlar"
-                name="group1"
-                type={"radio"}
-                value={true}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setFilteredStatus(
-                    val === "reset" ? val : val === "true" ? true : false
-                  );
-                }}
-              />
-              <Form.Check
-                inline
-                label="Satın Alınmayanlar"
-                name="group1"
-                type={"radio"}
-                value={false}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setFilteredStatus(
-                    val === "reset" ? val : val === "true" ? true : false
-                  );
-                }}
-              />
+              >
+                <Form.Check
+                  inline
+                  value={"reset"}
+                  label="Tümü"
+                  name="group1"
+                  type={"radio"}
+                  id={`inline-radio-1`}
+                />
+                <Form.Check
+                  inline
+                  value={true}
+                  label="Satın Alınanlar"
+                  name="group1"
+                  type={"radio"}
+                  id={`inline-radio-2`}
+                />
+                <Form.Check
+                  inline
+                  value={false}
+                  label="Satın Alınmayanlar"
+                  name="group1"
+                  type={"radio"}
+                  id={`inline-radio-3`}
+                />
+              </FormGroup>
 
               <Form.Control
                 onChange={(e) => {
