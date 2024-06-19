@@ -1,16 +1,17 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareMinus } from "@fortawesome/free-regular-svg-icons";
+import { Button } from "react-bootstrap";
 import "../App.css";
 
 function IconButton({ productId, products, setProducts }) {
-  const deleteProduct = (e) => {
+  const deleteProduct = () => {
     console.log(productId);
 
     setProducts((products) => {
       return products.filter((product) => product.id !== productId);
     });
-    e.stopPropagation();
+
     console.log(products);
   };
 
