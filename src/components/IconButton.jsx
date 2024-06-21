@@ -1,16 +1,23 @@
 import React from "react";
 import { FaTrash } from "react-icons/fa";
+import styled from "styled-components";
 
-const IconButton = ({handleClick}) => {
+const Btn = styled.button`
+  background-color: transparent;
+  border: none;
+  width: 100%;
+`;
+
+const IconButton = ({ handleClick }) => {
   return (
-    <button
+    <Btn
       onClick={(e) => {
         e.stopPropagation();
-        handleClick()
+        handleClick();
       }}
     >
       <FaTrash />
-    </button>
+    </Btn>
   );
 };
 

@@ -37,15 +37,23 @@ function App() {
   const [filteredStatus, setFilteredStatus] = useState("");
 
   const addProduct = () => {
-    const product = {
-      id: nanoid(),
-      name: listInput,
-      category: productCategory,
-      shop: productShop,
-    };
+    if (listInput && productShop && productCategory) {
+      const product = {
+        id: nanoid(),
+        name: listInput,
+        category: productCategory,
+        shop: productShop,
+      };
 
-    setProducts([...products, product]);
-    console.log(products);
+      setProducts([...products, product]);
+      console.log(products);
+    } else {
+      alert("Alanlari doldurunuz");
+    }
+
+    setProductCategory("");
+    setProductShop("");
+    setListInput("");
   };
 
   const filteredProducts = products.filter((product) => {
