@@ -1,25 +1,17 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquareMinus } from "@fortawesome/free-regular-svg-icons";
-import { Button } from "react-bootstrap";
-import "../App.css";
+import { FaTrash } from "react-icons/fa";
 
-function IconButton({ productId, products, setProducts }) {
-  const deleteProduct = () => {
-    console.log(productId);
-
-    setProducts((products) => {
-      return products.filter((product) => product.id !== productId);
-    });
-
-    console.log(products);
-  };
-
+const IconButton = ({handleClick}) => {
   return (
-    <div className="icon">
-      <FontAwesomeIcon onClick={deleteProduct} icon={faSquareMinus} />
-    </div>
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        handleClick()
+      }}
+    >
+      <FaTrash />
+    </button>
   );
-}
+};
 
 export default IconButton;
