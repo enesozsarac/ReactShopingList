@@ -212,7 +212,7 @@ function App() {
 
       <Container className="mt-5">
         <Table>
-          <thead>
+          <thead className="text-center">
             <tr>
               <th>Name</th>
               <th>Shop</th>
@@ -221,7 +221,7 @@ function App() {
               <th>Sil</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-center">
             {filteredProducts.map((product) => (
               <TableRow
                 isBought={product.isBought}
