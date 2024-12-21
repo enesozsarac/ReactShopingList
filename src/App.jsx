@@ -15,7 +15,7 @@ function App() {
   const [filteredName, setFilteredName] = useState("");
   const [filteredShopId, setFilteredShopId] = useState("");
   const [filteredCategoryId, setFilteredCategoryId] = useState("");
-  const [filteredStatus, setFilteredStatus] = useState("");
+  const [filteredStatus, setFilteredStatus] = useState("reset");
 
   const shops = [
     {
@@ -114,19 +114,17 @@ function App() {
       result = false;
     }
 
-    //Status Filter
     if (
       filteredStatus !== "reset" &&
-      ((product.isBought === true && filteredStatus !== true) ||
-        (product.isBought === undefined && filteredStatus === true))
+      product.isBought !== (filteredStatus === true)
     ) {
       result = false;
     }
+
     return result;
   });
 
   console.log(filteredProducts);
-
 
   return (
     <React.Fragment>
