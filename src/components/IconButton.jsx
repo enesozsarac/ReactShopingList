@@ -1,24 +1,24 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquareMinus } from "@fortawesome/free-regular-svg-icons";
-import "../App.css";
+import { FaTrash } from "react-icons/fa";
+import styled from "styled-components";
 
-function IconButton({ productId, products, setProducts }) {
-  const deleteProduct = (e) => {
-    console.log(productId);
+const Btn = styled.button`
+  background-color: transparent;
+  border: none;
+  width: 100%;
+`;
 
-    setProducts((products) => {
-      return products.filter((product) => product.id !== productId);
-    });
-    e.stopPropagation();
-    console.log(products);
-  };
-
+const IconButton = ({ handleClick }) => {
   return (
-    <div className="icon">
-      <FontAwesomeIcon onClick={deleteProduct} icon={faSquareMinus} />
-    </div>
+    <Btn
+      onClick={(e) => {
+        e.stopPropagation();
+        handleClick();
+      }}
+    >
+      <FaTrash />
+    </Btn>
   );
-}
+};
 
 export default IconButton;

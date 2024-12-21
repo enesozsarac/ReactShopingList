@@ -1,115 +1,77 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
+import { Button, Container, Form, Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Container, Form, FormGroup, Table } from "react-bootstrap";
+import { useState } from "react";
 import { nanoid } from "nanoid";
+import styled from "styled-components";
 import IconButton from "./components/IconButton";
 import Fuse from "fuse.js";
 
+const shops = ["Migros", "Teknosa", "Bim"];
+
+const shopsObj = shops.map((shop, index) => ({
+  id: index,
+  name: shop,
+}));
+
+const categories = ["Elektronik", "Şarküteri", "Oyuncak", "Bakliyat", "Fırın"];
+
+const categoriesObj = categories.map((category, index) => ({
+  id: index,
+  name: category,
+}));
+
+const TableRow = styled.tr`
+  text-decoration: ${(props) =>
+    props.isBought === true ? "line-through" : "unset"};
+`;
+
 function App() {
-  const [listInput, setListInput] = useState("");
   const [products, setProducts] = useState([]);
-  const [selectedShop, setSelectedShop] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [listInput, setListInput] = useState("");
+  const [productShop, setProductShop] = useState("");
+  const [productCategory, setProductCategory] = useState("");
 
   const [filteredName, setFilteredName] = useState("");
   const [filteredShopId, setFilteredShopId] = useState("");
   const [filteredCategoryId, setFilteredCategoryId] = useState("");
   const [filteredStatus, setFilteredStatus] = useState("reset");
 
-  const shops = [
-    {
-      id: 1,
-      name: "Migros",
-    },
-    {
-      id: 2,
-      name: "Teknosa",
-    },
-    {
-      id: 3,
-      name: "Bim",
-    },
-  ];
-
-  const categories = [
-    {
-      id: 1,
-      name: "Elektronik",
-    },
-    {
-      id: 2,
-      name: "Şarküteri",
-    },
-    {
-      id: 3,
-      name: "Oyuncak",
-    },
-    {
-      id: 4,
-      name: "Bakliyat",
-    },
-    {
-      id: 5,
-      name: "Fırın",
-    },
-  ];
-
   const addProduct = () => {
-    if (listInput && selectedShop && selectedCategory) {
-      const productName = listInput;
-      const productId = nanoid().slice(0, 5);
-
+    if (listInput && productShop && productCategory) {
       const product = {
-        id: productId,
-        name: productName,
-        shop: selectedShop,
-        category: selectedCategory,
+        id: nanoid(),
+        name: listInput,
+        category: productCategory,
+        shop: productShop,
       };
 
       setProducts([...products, product]);
-      setListInput("");
+      console.log(products);
     } else {
-      alert("Ürun ozellileri gir");
-    }
-  };
-
-  const isPurchased = (productId) => {
-    const updatedProducts = products.map((product) => {
-      if (product.id === productId) {
-        return { ...product, isBought: true };
-      } else {
-        return product;
-      }
-    });
-
-    if (
-      updatedProducts.every((updatedProduct) =>
-        Boolean(updatedProduct.isBought)
-      )
-    ) {
-      alert("Alisveris Tamamlandi");
+      alert("Alanlari doldurunuz");
     }
 
-    setProducts(updatedProducts);
+    setProductCategory("");
+    setProductShop("");
+    setListInput("");
   };
 
   const filteredProducts = products.filter((product) => {
     let result = true;
-    // Name search
-    const fuse = new Fuse(products, { keys: ["name"] });
+
+    const fuse = new Fuse(products, {
+      keys: ["name"],
+    });
     const res = fuse.search(filteredName);
 
     if (filteredName !== "" && !res.find((r) => r.item.id === product.id)) {
       result = false;
     }
 
-    //Shop Filter
     if (filteredShopId !== "" && product.shop !== filteredShopId) {
       result = false;
     }
 
-    // Category Filter
     if (filteredCategoryId !== "" && product.category !== filteredCategoryId) {
       result = false;
     }
@@ -124,168 +86,200 @@ function App() {
     return result;
   });
 
+<<<<<<< HEAD
   console.log(filteredProducts);
 
+=======
+>>>>>>> 98d7f7916d0900463b3614cefe3ff3e900c5bd28
   return (
-    <React.Fragment>
-      <Container>
-        <Form>
-          <Form.Group className="m-5 text-center ">
-            <h5 className="mb-4 font-weight-bold">
-              Alışverişte Alınacaklar Listesi
-            </h5>
-            <div className="d-flex justify-content-center">
-              <Form.Control
-                onChange={(e) => {
-                  setListInput(e.target.value);
-                }}
-                type="text"
-                value={listInput}
-                className="w-50 mx-2"
-                placeholder="Ürün Adı"
-              />
-              <Form.Select
-                className="w-25"
-                onChange={(e) => setSelectedShop(e.target.value)}
-              >
-                <option>Market</option>
-                {shops.map((shop) => (
-                  <option key={shop.id} value={shop.id}>
-                    {shop.name}
-                  </option>
-                ))}
-              </Form.Select>
-
-              <Form.Select
-                className="w-25 mx-2"
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                <option>Kategori</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </Form.Select>
-              <Button variant="primary" onClick={addProduct}>
-                Ekle
-              </Button>
-            </div>
+    <>
+      <Container className="d-flex my-5">
+        <Form className="w-100">
+          <Form.Group className="mb-3 " controlId="exampleForm.ControlInput1">
+            <Form.Control
+              placeholder="Name"
+              value={listInput}
+              onChange={(e) => {
+                setListInput(e.target.value);
+              }}
+              type="text"
+            />
           </Form.Group>
+          <div className="d-flex gap-3">
+            <Form.Select
+              aria-label="Default select example"
+              value={productShop}
+              onChange={(e) => {
+                setProductShop(e.target.value);
+              }}
+            >
+              <option>Filter Shop</option>
+              {shopsObj.map((shop) => (
+                <option key={shop.id} value={shop.id}>
+                  {shop.name}
+                </option>
+              ))}
+            </Form.Select>
+            <Form.Select
+              aria-label="Default select example"
+              value={productCategory}
+              onChange={(e) => setProductCategory(e.target.value)}
+            >
+              <option>Filter Category</option>
+              {categoriesObj.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </Form.Select>
+            <Button onClick={addProduct}>Ekle</Button>
+          </div>
         </Form>
+      </Container>
 
-        <div className="mb-5">
-          <h5 className="text-center mb-5">Filter</h5>
-          <Form>
-            <div className="d-flex justify-content-center">
-              <Form.Select
-                className="w-25 "
-                value={filteredShopId}
-                onChange={(e) => setFilteredShopId(e.target.value)}
-              >
-                <option value={""}>Market</option>
-                {shops.map((shop) => (
-                  <option key={shop.id} value={shop.id}>
-                    {shop.name}
-                  </option>
-                ))}
-              </Form.Select>
-
-              <Form.Select
-                className="w-25 mx-2"
-                value={filteredCategoryId}
-                onChange={(e) => setFilteredCategoryId(e.target.value)}
-              >
-                <option value={""}>Kategori</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </Form.Select>
-
-              <FormGroup
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setFilteredStatus(
-                    val === "reset" ? val : val === "true" ? true : false
-                  );
-                }}
-              >
-                <Form.Check
-                  inline
-                  value={"reset"}
-                  label="Tümü"
-                  name="group1"
-                  type={"radio"}
-                  id={`inline-radio-1`}
-                />
-                <Form.Check
-                  inline
-                  value={true}
-                  label="Satın Alınanlar"
-                  name="group1"
-                  type={"radio"}
-                  id={`inline-radio-2`}
-                />
-                <Form.Check
-                  inline
-                  value={false}
-                  label="Satın Alınmayanlar"
-                  name="group1"
-                  type={"radio"}
-                  id={`inline-radio-3`}
-                />
-              </FormGroup>
-
-              <Form.Control
-                onChange={(e) => {
-                  setFilteredName(e.target.value);
-                }}
-                value={filteredName}
-                type="text"
-                className="w-50 mx-2"
-                placeholder="Ürün Adı"
+      <Container className="d-flex">
+        <Form className="w-100">
+          <Form.Group className="mb-3 " controlId="exampleForm.ControlInput1">
+            <Form.Control
+              placeholder="Filter Name"
+              value={filteredName}
+              onChange={(e) => {
+                setFilteredName(e.target.value);
+              }}
+              type="text"
+            />
+          </Form.Group>
+          <div className="d-flex  gap-3">
+            <Form.Select
+              aria-label="Default select example"
+              value={filteredShopId}
+              onChange={(e) => {
+                setFilteredShopId(e.target.value);
+              }}
+            >
+              <option value={""}>Shop</option>
+              {shopsObj.map((shop) => (
+                <option key={shop.id} value={shop.id}>
+                  {shop.name}
+                </option>
+              ))}
+            </Form.Select>
+            <Form.Select
+              aria-label="Default select example"
+              value={filteredCategoryId}
+              onChange={(e) => setFilteredCategoryId(e.target.value)}
+            >
+              <option value={""}>Category</option>
+              {categoriesObj.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </Form.Select>
+            <Form.Group
+              onChange={(e) => {
+                const val = e.target.value;
+                setFilteredStatus(
+                  val === "reset" ? val : val === "true" ? true : false
+                );
+              }}
+              className="d-flex"
+            >
+              <Form.Check
+                inline
+                label="Tümü"
+                name="group1"
+                type={"radio"}
+                id={"all"}
+                value={"reset"}
               />
-            </div>
-          </Form>
-        </div>
+              <Form.Check
+                inline
+                label="Satın Alınanlar"
+                name="group1"
+                type={"radio"}
+                id={"bought"}
+                value={"true"}
+              />
+              <Form.Check
+                inline
+                label="Satın Alınmayanlar"
+                name="group1"
+                type={"radio"}
+                id={"notBought"}
+                value={"false"}
+              />
+            </Form.Group>
+          </div>
+        </Form>
+      </Container>
 
-        <Table striped bordered hover size="sm">
-          <thead>
+      <Container className="mt-5">
+        <Table>
+          <thead className="text-center">
             <tr>
-              <th>#</th>
-              <th>Ürün Adı</th>
-              <th>Market</th>
-              <th>Kategori</th>
+              <th>Name</th>
+              <th>Shop</th>
+              <th>Category</th>
+              <th>ID</th>
+              <th>Sil</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-center">
             {filteredProducts.map((product) => (
-              <tr
+              <TableRow
+                isBought={product.isBought}
                 key={product.id}
-                onClick={() => isPurchased(product.id)}
-                style={{
-                  textDecoration: product.isBought ? "line-through" : "unset",
+                onClick={() => {
+                  const updatedProducts = products.map((oldProduct) => {
+                    if (oldProduct.id === product.id) {
+                      return { ...oldProduct, isBought: true };
+                    } else {
+                      return oldProduct;
+                    }
+                  });
+                  if (
+                    updatedProducts.every((updatedProduct) =>
+                      Boolean(updatedProduct.isBought)
+                    )
+                  ) {
+                    alert("Alisveris Tamamlandi");
+                  }
+                  setProducts(updatedProducts);
                 }}
               >
-                <td>{product.id}</td>
                 <td>{product.name}</td>
-                <td>{shops[product.shop - 1]?.name}</td>
-                <td>{categories[product.category - 1]?.name}</td>
                 <td>
-                  <IconButton
-                    productId={product.id}
-                    products={products}
-                    setProducts={setProducts}
-                  />
+                  {
+                    shopsObj.find(
+                      (shopObj) => shopObj.id === parseInt(product.shop)
+                    )?.name
+                  }
                 </td>
-              </tr>
+                <td>
+                  {
+                    categoriesObj.find(
+                      (categoryObj) =>
+                        categoryObj.id === parseInt(product.category)
+                    )?.name
+                  }
+                </td>
+                <td>{product.id}</td>
+                <IconButton
+                  handleClick={() => {
+                    setProducts(
+                      products.filter(
+                        (filterProduct) => filterProduct.id !== product.id
+                      )
+                    );
+                  }}
+                />
+              </TableRow>
             ))}
           </tbody>
         </Table>
       </Container>
-    </React.Fragment>
+    </>
   );
 }
 
