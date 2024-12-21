@@ -78,7 +78,7 @@ function App() {
 
     if (
       filteredStatus !== "reset" &&
-      product.isBought !== (filteredStatus === true)
+      (product.isBought || false) !== (filteredStatus === true)
     ) {
       result = false;
     }
