@@ -86,11 +86,6 @@ function App() {
     return result;
   });
 
-<<<<<<< HEAD
-  console.log(filteredProducts);
-
-=======
->>>>>>> 98d7f7916d0900463b3614cefe3ff3e900c5bd28
   return (
     <>
       <Container className="d-flex my-5">
